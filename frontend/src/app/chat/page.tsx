@@ -83,12 +83,12 @@ export default function ChatPage() {
       };
       
       setMessages(prev => [...prev, assistantMsg]);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       const errorMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: "Sorry, I had trouble connecting to the server. Please try again later.",
+        content: `Sorry, I had trouble connecting to the server. (Target: ${api.defaults.baseURL}) Details: ${error.response?.data?.detail || error.message || "Network issue"}`,
         fallback: true
       };
       setMessages(prev => [...prev, errorMsg]);

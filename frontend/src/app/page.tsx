@@ -1,50 +1,15 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import api from '@/lib/api';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Send, LogOut, Bot, User as UserIcon, Loader2, Info, HelpCircle } from 'lucide-react';
-import clsx from 'clsx';
-import faqsData from '@/lib/faqs.json';
+import { motion } from 'framer-motion';
+import { LogOut, Bot, User as UserIcon, Loader2, MessageSquare, Shield, Zap, Database } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LandingPage } from '@/components/LandingPage';
-
-interface Source {
-  chunk: string;
-  score: number;
-  faiss_dist: number;
-  bm25_score: number;
-}
-
-interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  confidence?: number;
-  sources?: Source[];
-  fallback?: boolean;
-}
 
 export default function Home() {
   const { user, isAuthenticated, isLoading, logout } = useAuth();
   const router = useRouter();
-  
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 'welcome',
-      role: 'assistant',
-      content: "Hello! I'm your Support Copilot. Ask me anything about our software."
-    }
-  ]);
-  const [input, setInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isTyping]);
 
   if (isLoading) {
     return (
@@ -58,44 +23,11 @@ export default function Home() {
     return <LandingPage />;
   }
 
-  const handleSend = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-
-    const userMsg: Message = { id: Date.now().toString(), role: 'user', content: input };
-    setMessages(prev => [...prev, userMsg]);
-    setInput('');
-    setIsTyping(true);
-
-    try {
-      const response = await api.post('/api/query/', { query: userMsg.content });
-      
-      const assistantMsg: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: response.data.answer,
-        confidence: response.data.confidence,
-        sources: response.data.sources,
-        fallback: response.data.fallback
-      };
-      
-      setMessages(prev => [...prev, assistantMsg]);
-    } catch (error) {
-      console.error(error);
-      const errorMsg: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: "Sorry, I had trouble connecting to the server. Please try again later.",
-        fallback: true
-      };
-      setMessages(prev => [...prev, errorMsg]);
-    } finally {
-      setIsTyping(false);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-slate-900 dark:text-white flex flex-col font-sans selection:bg-cyan-500/30">
+    <div className="min-h-screen bg-slate-50 dark:bg-black text-slate-900 dark:text-white flex flex-col font-sans transition-colors duration-300 relative overflow-hidden">
+      {/* Ambient background glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-cyan-400/5 dark:bg-cyan-500/5 blur-[100px] rounded-full pointer-events-none"></div>
+
       {/* Header */}
       <header className="flex-none h-16 border-b border-slate-200 dark:border-white/10 bg-white/80 dark:bg-black/50 backdrop-blur-md flex items-center justify-between px-6 z-10 sticky top-0">
         <div className="flex items-center gap-3">
@@ -123,122 +55,112 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="flex-grow overflow-hidden flex flex-col lg:flex-row w-full">
-        {/* Chat Area */}
-        <section className="flex-grow flex flex-col relative min-w-0 border-r border-slate-200 dark:border-white/5 h-[calc(100vh-4rem)]">
-          
-          {/* Messages */}
-          <div className="flex-grow overflow-y-auto p-4 sm:p-6 custom-scrollbar">
-            <div className="max-w-4xl w-full mx-auto space-y-6 pb-4">
-              <AnimatePresence initial={false}>
-              {messages.map((msg) => (
-                <motion.div
-                  key={msg.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className={clsx("flex gap-4 max-w-3xl", msg.role === 'user' ? "ml-auto flex-row-reverse" : "")}
-                >
-                  <div className={clsx("w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1", 
-                    msg.role === 'user' ? "bg-slate-200 border-slate-300 dark:bg-slate-800 border dark:border-slate-700" : "bg-cyan-600 dark:bg-cyan-500 shadow-md shadow-cyan-500/20"
-                  )}>
-                    {msg.role === 'user' ? <UserIcon size={16} className="text-slate-600 dark:text-slate-300"/> : <Bot size={18} className="text-white"/>}
-                  </div>
-                  
-                  <div className={clsx("flex flex-col gap-1", msg.role === 'user' ? "items-end" : "items-start")}>
-                    <div className={clsx(
-                      "px-5 py-3 rounded-2xl text-[15px] leading-relaxed",
-                      msg.role === 'user' 
-                        ? "bg-slate-100 text-slate-900 border border-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700/50 rounded-tr-sm" 
-                        : "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-slate-200 rounded-tl-sm backdrop-blur-sm shadow-sm"
-                    )}>
-                      {msg.content}
-                    </div>
-                    
-                    {msg.role === 'assistant' && msg.id !== 'welcome' && (
-                      <div className="flex items-center gap-3 px-1 mt-1">
-                         {msg.fallback ? (
-                           <span className="text-xs text-orange-400 flex items-center gap-1">
-                             <Info size={12}/> Low confidence fallback
-                           </span>
-                         ) : (
-                           <span className={clsx("text-xs flex items-center gap-1", 
-                              ((msg.confidence || 0) / 0.03278) > 0.8 ? "text-emerald-400" : "text-amber-400"
-                           )}>
-                             Confidence: {msg.confidence ? (Math.min((msg.confidence / 0.03278) * 100, 100)).toFixed(1) : 0}%
-                           </span>
-                         )}
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-            
-            {isTyping && (
-              <motion.div 
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} 
-                className="flex gap-4 max-w-3xl"
-              >
-                <div className="w-8 h-8 rounded-full bg-cyan-600 dark:bg-cyan-500 shadow-md shadow-cyan-500/20 flex items-center justify-center flex-shrink-0">
-                  <Bot size={18} className="text-white"/>
-                </div>
-                <div className="px-5 py-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-tl-sm flex items-center gap-1.5">
-                  <div className="w-1.5 h-1.5 bg-slate-400 dark:bg-slate-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                  <div className="w-1.5 h-1.5 bg-slate-400 dark:bg-slate-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                  <div className="w-1.5 h-1.5 bg-slate-400 dark:bg-slate-500 rounded-full animate-bounce"></div>
-                </div>
-              </motion.div>
-            )}
-            <div ref={messagesEndRef} className="h-4" />
+      {/* Dashboard Body */}
+      <main className="flex-1 flex flex-col items-center justify-center p-6 max-w-6xl mx-auto w-full z-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-3">
+            Welcome back, <span className="text-cyan-600 dark:text-cyan-400">{user?.username}</span>!
+          </h2>
+          <p className="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
+            Your SaaS support metrics are synced and retrieval streams are online.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-12">
+          {/* User Section */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="p-6 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm grow flex flex-col"
+          >
+            <div className="w-10 h-10 bg-cyan-100 dark:bg-cyan-500/20 rounded-xl flex items-center justify-center mb-4 text-cyan-600 dark:text-cyan-400">
+              <UserIcon size={20} />
             </div>
-          </div>
+            <h3 className="text-lg font-semibold mb-1">User Account</h3>
+            <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">Profile and session status.</p>
+            <div className="mt-auto space-y-2 text-sm">
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-white/5">
+                <span className="text-slate-400">Username</span>
+                <span className="font-medium">{user?.username}</span>
+              </div>
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-white/5">
+                <span className="text-slate-400">Status</span>
+                <span className="text-emerald-500 font-medium">Active</span>
+              </div>
+            </div>
+          </motion.div>
 
-          {/* Input Area */}
-          <div className="p-4 bg-white/80 dark:bg-black/40 backdrop-blur-md border-t border-slate-200 dark:border-white/10">
-            <form onSubmit={handleSend} className="max-w-4xl mx-auto relative group">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask a support question..."
-                className="w-full bg-slate-50 dark:bg-black border border-slate-300 dark:border-white/10 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-5 py-4 pr-14 text-slate-900 dark:text-slate-100 placeholder-slate-500 outline-none transition-all shadow-sm dark:shadow-inner"
-              />
-              <button
-                type="submit"
-                disabled={!input.trim() || isTyping}
-                className="absolute right-2 top-2 bottom-2 aspect-square flex items-center justify-center bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-200 dark:disabled:bg-slate-800 disabled:text-slate-400 dark:disabled:text-slate-500 text-white rounded-lg transition-colors"
-              >
-                <Send size={18} className={input.trim() && !isTyping ? "translate-x-[-1px] translate-y-[1px]" : ""} />
-              </button>
-            </form>
-            <p className="text-center text-[11px] text-slate-500 mt-3 font-medium tracking-wide uppercase">
-              RAG Copilot uses pure retrieval without generative AI hallucinations.
-            </p>
-          </div>
-        </section>
+          {/* System Details Card */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="p-6 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm grow flex flex-col"
+          >
+            <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-500/20 rounded-xl flex items-center justify-center mb-4 text-indigo-600 dark:text-indigo-400">
+              <Database size={20} />
+            </div>
+            <h3 className="text-lg font-semibold mb-1">Retrieval Metrics</h3>
+            <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">Indices and backend telemetry.</p>
+            <div className="mt-auto space-y-2 text-sm">
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-white/5">
+                <span className="text-slate-400">FAISS Chunks</span>
+                <span className="font-medium">Initialized</span>
+              </div>
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-white/5">
+                <span className="text-slate-400">BM25 Retrieval</span>
+                <span className="text-emerald-500 font-medium">Online</span>
+              </div>
+            </div>
+          </motion.div>
 
-        {/* Right Sidebar: Available Questions */}
-        <aside className="w-full lg:w-80 xl:w-96 bg-slate-50 dark:bg-black/20 border-l border-slate-200 dark:border-white/5 flex flex-col h-[calc(100vh-4rem)] hidden lg:flex">
-          <div className="p-4 border-b border-slate-200 dark:border-white/5 bg-white/80 dark:bg-black/40 shrink-0">
-            <h2 className="font-semibold text-sm text-slate-800 dark:text-slate-300 flex items-center gap-2">
-              <HelpCircle size={16} className="text-cyan-600 dark:text-cyan-400"/>
-              Available Questions
-            </h2>
-          </div>
-          <div className="flex-grow overflow-y-auto p-4 custom-scrollbar space-y-2">
-             {faqsData.map((faq, i) => (
-               <button 
-                 key={i}
-                 onClick={() => setInput(faq.question)}
-                 className="w-full text-left p-3 bg-white hover:bg-slate-100 dark:bg-white/[0.02] dark:hover:bg-white/[0.05] border border-slate-200 dark:border-white/5 rounded-xl text-sm text-slate-700 dark:text-slate-300 transition-colors group"
-               >
-                 <span className="group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors">{faq.question}</span>
-               </button>
-             ))}
-          </div>
-        </aside>
+          {/* Security details */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+            className="p-6 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm grow flex flex-col"
+          >
+            <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-500/20 rounded-xl flex items-center justify-center mb-4 text-emerald-600 dark:text-emerald-400">
+              <Shield size={20} />
+            </div>
+            <h3 className="text-lg font-semibold mb-1">Architecture</h3>
+            <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">Privacy and security guarantees.</p>
+            <div className="mt-auto space-y-2 text-sm">
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-white/5">
+                <span className="text-slate-400">JWT Tokens</span>
+                <span className="font-medium">Secured</span>
+              </div>
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-white/5">
+                <span className="text-slate-400">Analytics</span>
+                <span className="font-medium">SaaS Standard</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Action Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.4 }}
+          className="flex flex-col items-center gap-3"
+        >
+          <button 
+            onClick={() => router.push('/chat')}
+            className="px-10 py-5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-2xl font-semibold transition-all shadow-xl shadow-cyan-500/20 flex items-center justify-center gap-3 group text-lg"
+          >
+            Launch Support Chat 
+            <MessageSquare size={22} className="group-hover:translate-x-1 transition-transform" />
+          </button>
+          <span className="text-xs text-slate-500 uppercase tracking-widest font-medium">Safe from hallucinations</span>
+        </motion.div>
       </main>
     </div>
   );

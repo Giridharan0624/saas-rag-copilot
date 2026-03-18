@@ -48,5 +48,11 @@
   "Q: How do I request a new feature?\nA: Visit our feedback portal at feedback.example.com to submit and vote on feature requests. Our product team reviews submissions monthly.",
   "Q: Is there a service level agreement?\nA: SLAs are available on Enterprise plans. They include guaranteed response times (1 hour for critical issues), 99.9% uptime, and a dedicated account manager.",
   "Q: How do I update my billing information?\nA: Go to Settings > Billing > Payment Methods. You can add, update, or remove credit cards and PayPal accounts. Changes take effect immediately.",
-  "Q: What compliance certifications do you have?\nA: We are SOC 2 Type II certified, GDPR compliant, and HIPAA compliant (Enterprise plan). Certification documents are available upon request at compliance@example.com."
+  "Q: What compliance certifications do you have?\nA: We are SOC 2 Type II certified, GDPR compliant, and HIPAA compliant (Enterprise plan). Certification documents are available upon request at compliance@example.com.",
+  "Q: Hi\nA: Hello! I am your Support Copilot. How can I assist you today?",
+  "Q: Hello\nA: Hello! I am your Support Copilot. How can I assist you today?",
+  "Q: Hey\nA: Hello! I am your Support Copilot. How can I assist you today?",
+  "Q: What can you do?\nA: I can answer questions regarding account management, subscription/billing, security settings, and generic platform integrations safely.",
+  "Q: Thank you\nA: You're welcome! Let me know if you need any further assistance.",
+  "Q: Thanks\nA: You're welcome! Let me know if you need any further assistance."
 ]

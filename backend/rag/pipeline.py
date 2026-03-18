@@ -50,8 +50,12 @@ def rag_pipeline(
             "fallback": True,
         }
 
+    answer_text = best["chunk"]
+    if "\nA: " in answer_text:
+        answer_text = answer_text.split("\nA: ", 1)[1]
+
     return {
-        "answer": best["chunk"],
+        "answer": answer_text,
         "confidence": best["score"],
         "sources": results,
         "fallback": False,

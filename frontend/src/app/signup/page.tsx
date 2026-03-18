@@ -5,10 +5,15 @@ import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { Eye, EyeOff } from 'lucide-react';
 
 export default function SignupPage() {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [reenterPassword, setReenterPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showReenterPassword, setShowReenterPassword] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const router = useRouter();
@@ -16,8 +21,14 @@ export default function SignupPage() {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    if (password !== reenterPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
     try {
-      const response = await api.post('/auth/signup', { username, password });
+      const response = await api.post('/auth/signup', { username, email, password });
       setSuccess(true);
       setTimeout(() => {
         router.push('/login');
@@ -67,15 +78,59 @@ export default function SignupPage() {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">Password</label>
+            <label className="block text-sm font-medium text-slate-300 mb-1">Email</label>
             <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
               className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
-              placeholder="••••••••"
+              placeholder="name@company.com"
             />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1">Password</label>
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 pr-10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                onClick={() => setShowPassword(!showPassword)}
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1">Re-enter Password</label>
+            <div className="relative">
+              <input
+                type={showReenterPassword ? 'text' : 'password'}
+                value={reenterPassword}
+                onChange={(e) => setReenterPassword(e.target.value)}
+                required
+                className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 pr-10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                onClick={() => setShowReenterPassword(!showReenterPassword)}
+                tabIndex={-1}
+              >
+                {showReenterPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
 
           <button

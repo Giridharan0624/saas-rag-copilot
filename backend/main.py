@@ -109,3 +109,4 @@ def root():
         "app": settings.APP_NAME,
         "index_loaded": index_ready,
     }
+

@@ -13,10 +13,21 @@ from auth.dependencies import get_current_user
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 # ---------------------------------------------------------------------------
-# In-memory user store (swap for a real DB later)
-# Structure: { "username": "hashed_password" }
+# SQLite user store
 # ---------------------------------------------------------------------------
-users_db: dict[str, str] = {}
+import sqlite3
+from auth.database import get_db, init_db
+
+# Initialize the database table if it doesn't exist
+init_db()
+
+def get_user_hash(username: str) -> str | None:
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT hashed_password FROM users WHERE username = ?", (username,))
+    row = cursor.fetchone()
+    conn.close()
+    return row["hashed_password"] if row else None
 
 
 # ── Signup ─────────────────────────────────────────────────────────────────
@@ -27,12 +38,22 @@ users_db: dict[str, str] = {}
     summary="Register a new user",
 )
 def signup(user: UserCreate):
-    if user.username in users_db:
+    conn = get_db()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            "INSERT INTO users (username, email, hashed_password) VALUES (?, ?, ?)",
+            (user.username, user.email, hash_password(user.password)),
+        )
+        conn.commit()
+    except sqlite3.IntegrityError:
+        conn.close()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Username already exists",
         )
-    users_db[user.username] = hash_password(user.password)
+    finally:
+        conn.close()
     return MessageResponse(message=f"User '{user.username}' created successfully")
 
 
@@ -43,7 +64,7 @@ def signup(user: UserCreate):
     summary="Login and receive access + refresh tokens",
 )
 def login(user: UserLogin):
-    stored_hash = users_db.get(user.username)
+    stored_hash = get_user_hash(user.username)
 
     if stored_hash is None or not verify_password(user.password, stored_hash):
         raise HTTPException(
@@ -73,7 +94,7 @@ def refresh(body: RefreshTokenRequest):
         )
 
     username = payload.get("sub")
-    if username is None or username not in users_db:
+    if username is None or get_user_hash(username) is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="User not found",

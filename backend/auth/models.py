@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 class UserCreate(BaseModel):
     """Schema for user registration."""
     username: str = Field(..., min_length=3, max_length=50, description="Username")
+    email: str = Field(..., description="Email Address")
     password: str = Field(..., min_length=6, max_length=100, description="Password")
 
 

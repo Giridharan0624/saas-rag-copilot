@@ -11,8 +11,8 @@ MIN_RRF_SCORE: float = 0.007
 
 # Maximum FAISS L2 distance to consider a semantic match acceptable.
 # all-MiniLM-L6-v2 embeddings are unit-normed; L2 ≈ 2*(1-cosine),
-# so 1.0 ≈ cosine similarity of 0.5 (a mediocre match).
-MAX_FAISS_DIST: float = 1.0
+# so 1.0 ≈ cosine similarity of 0.5. Greetings/short words need slightly higher (1.4).
+MAX_FAISS_DIST: float = 1.4
 
 FALLBACK_MESSAGE = (
     "I don't have enough information to answer that question reliably. "

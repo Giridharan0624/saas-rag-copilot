@@ -1,0 +1,47 @@
+Loading FAISS from d:\PROJECTS\SaaS-rag-copilot\backend\rag\data\faiss.index...
+Loading BM25 from d:\PROJECTS\SaaS-rag-copilot\backend\rag\data\bm25.pkl...
+Loading Chunks from d:\PROJECTS\SaaS-rag-copilot\backend\rag\data\chunks.json...
+
+--- Testing Query: 'hi' ---
+
+[1] Result:
+  Chunk: Q: Hi
+A: Hello! I am your Support Copilot. How can I assist you today?...
+  FAISS L2: 1.272815227508545
+  BM25 Score: 1.0
+  RFF Score: 0.03278688524590164
+
+[2] Result:
+  Chunk: Q: Hey
+A: Hello! I am your Support Copilot. How can I assist you today?...
+  FAISS L2: 1.3151884078979492
+  BM25 Score: 0.0
+  RFF Score: 0.016129032258064516
+
+[3] Result:
+  Chunk: Q: How do I reset my password?
+A: Go to Settings > Account > Reset Password. Enter your current pass...
+  FAISS L2: inf
+  BM25 Score: 0.0
+  RFF Score: 0.016129032258064516
+
+[4] Result:
+  Chunk: Q: Hello
+A: Hello! I am your Support Copilot. How can I assist you today?...
+  FAISS L2: 1.3775980472564697
+  BM25 Score: 0.0
+  RFF Score: 0.015873015873015872
+
+[5] Result:
+  Chunk: Q: How do I cancel my subscription?
+A: Navigate to Settings > Billing > Manage Subscription and clic...
+  FAISS L2: inf
+  BM25 Score: 0.0
+  RFF Score: 0.015873015873015872
+
+🎯 Best Match:
+  Chunk: Q: Hi
+A: Hello! I am your Support Copilot. How can I assist you today?
+  RFF Score: 0.03278688524590164
+  FAISS L2: 1.272815227508545
+  Confident? True

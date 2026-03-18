@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from rag import embedder, faiss_store, bm25_store
 
 DATA_FILE = os.path.join(
-    os.path.dirname(__file__), "..", "..", "data", "faqs.json"
+    os.path.dirname(__file__), "..", "data", "faqs.json"
 )
 
 

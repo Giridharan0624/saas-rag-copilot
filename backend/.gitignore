@@ -122,3 +122,8 @@ env/
 # OS files
 .DS_Store
 Thumbs.db
+
+# RAG Binary Index Datastores (rebuilt on startup)
+rag/data/
+push_err.txt
+capture_push.py

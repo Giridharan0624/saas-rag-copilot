@@ -25,10 +25,23 @@ async def lifespan(app: FastAPI):
         print("[Startup] RAG indexes loaded successfully.")
     except FileNotFoundError as e:
         print(f"[Startup] WARNING: {e}")
-        print("[Startup] Run `python rag/indexer.py` to build the indexes.")
-        _state["index"] = None
-        _state["bm25"] = None
-        _state["chunks"] = []
+        print("[Startup] Rebuilding indexes from faqs.json...")
+        try:
+            from rag import indexer
+            indexer.main()
+            
+            # Retry loading
+            index, chunks = faiss_store.load()
+            bm25 = bm25_store.load()
+            _state["index"] = index
+            _state["bm25"] = bm25
+            _state["chunks"] = chunks
+            print("[Startup] RAG indexes rebuilt and loaded successfully.")
+        except Exception as e2:
+            print(f"[Startup] ERROR rebuilding indexes: {e2}")
+            _state["index"] = None
+            _state["bm25"] = None
+            _state["chunks"] = []
     yield
     # Cleanup on shutdown (nothing to do for in-memory structures)
     _state.clear()

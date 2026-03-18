@@ -1,0 +1,15 @@
+{
+  "site_package_search_strategy": "all",
+  "search_path": [
+    "."
+  ],
+  "source_directories": [
+    {
+      "import_root": "."
+    }
+  ],
+  "python_version": "3.13",
+  "site_packages": [
+    ".venv\\Lib\\site-packages"
+  ]
+}

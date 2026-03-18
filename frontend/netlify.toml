@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = ".next"
+  publish = "out"
 
 # The following is managed automatically by Netlify's Next.js plugin, 
 # but guaranteed to build correctly on modern edge adapters.

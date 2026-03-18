@@ -1,0 +1,202 @@
+[
+  {
+    "question": "How do I reset my password?",
+    "answer": "Go to Settings > Account > Reset Password. Enter your current password and then set a new one. You'll receive a confirmation email once the change is complete."
+  },
+  {
+    "question": "How do I cancel my subscription?",
+    "answer": "Navigate to Settings > Billing > Manage Subscription and click 'Cancel Subscription'. Your access will continue until the end of the current billing period."
+  },
+  {
+    "question": "What payment methods do you accept?",
+    "answer": "We accept Visa, MasterCard, American Express, PayPal, and bank transfers for annual plans."
+  },
+  {
+    "question": "How do I upgrade my plan?",
+    "answer": "Go to Settings > Billing > Change Plan. Select your desired plan and confirm. The price difference will be prorated for the remainder of your billing cycle."
+  },
+  {
+    "question": "Can I get a refund?",
+    "answer": "We offer a 14-day money-back guarantee for new subscriptions. Contact support@example.com within 14 days of purchase to request a full refund."
+  },
+  {
+    "question": "How do I add team members?",
+    "answer": "Navigate to Settings > Team > Invite Members. Enter their email addresses and assign roles (Admin, Editor, or Viewer). They'll receive an invitation email."
+  },
+  {
+    "question": "What are the different user roles?",
+    "answer": "Admin: full access and billing. Editor: can create and modify content. Viewer: read-only access to dashboards and reports."
+  },
+  {
+    "question": "How do I enable two-factor authentication?",
+    "answer": "Go to Settings > Security > Two-Factor Authentication. Choose between authenticator app or SMS verification and follow the setup wizard."
+  },
+  {
+    "question": "How do I export my data?",
+    "answer": "Navigate to Settings > Data > Export. Choose the format (CSV, JSON, or PDF) and the date range. The export file will be emailed to you within 15 minutes."
+  },
+  {
+    "question": "What is the API rate limit?",
+    "answer": "Free plan: 100 requests per hour. Pro plan: 1,000 requests per hour. Enterprise plan: 10,000 requests per hour. Rate limit headers are included in every API response."
+  },
+  {
+    "question": "How do I generate an API key?",
+    "answer": "Go to Settings > Developer > API Keys and click 'Generate New Key'. Store the key securely as it will only be displayed once."
+  },
+  {
+    "question": "How do I contact support?",
+    "answer": "You can reach us via email at support@example.com, through the in-app chat widget, or by phone at +1-800-555-0199 during business hours (9 AM–6 PM EST)."
+  },
+  {
+    "question": "What browsers are supported?",
+    "answer": "We support the latest versions of Chrome, Firefox, Safari, and Edge. Internet Explorer is not supported."
+  },
+  {
+    "question": "Is there a mobile app?",
+    "answer": "Yes, our mobile app is available for iOS (App Store) and Android (Google Play). It supports all core features including dashboards, notifications, and team collaboration."
+  },
+  {
+    "question": "How do I set up notifications?",
+    "answer": "Go to Settings > Notifications. You can configure email, in-app, and push notification preferences for different event types like billing alerts, team updates, and system status."
+  },
+  {
+    "question": "Can I use a custom domain?",
+    "answer": "Custom domains are available on Pro and Enterprise plans. Go to Settings > Branding > Custom Domain and follow the DNS configuration instructions."
+  },
+  {
+    "question": "How do I integrate with Slack?",
+    "answer": "Navigate to Settings > Integrations > Slack. Click 'Connect' and authorize the app in your Slack workspace. You can then configure which channels receive notifications."
+  },
+  {
+    "question": "What is the uptime guarantee?",
+    "answer": "We guarantee 99.9% uptime for Pro and Enterprise plans. Our status page at status.example.com provides real-time system health information."
+  },
+  {
+    "question": "How do I delete my account?",
+    "answer": "Go to Settings > Account > Delete Account. This action is permanent and will remove all your data after a 30-day grace period. Download your data export before proceeding."
+  },
+  {
+    "question": "How do I change my email address?",
+    "answer": "Navigate to Settings > Account > Email. Enter your new email address and verify it through the confirmation link sent to the new address."
+  },
+  {
+    "question": "What is included in the free plan?",
+    "answer": "The free plan includes 1 user, 3 projects, 100 API calls per hour, 1 GB storage, and community support. No credit card required to start."
+  },
+  {
+    "question": "How do I create a new project?",
+    "answer": "Click the '+ New Project' button on the dashboard. Enter a project name, description, and select a template if desired. You can invite team members immediately after creation."
+  },
+  {
+    "question": "Can I transfer project ownership?",
+    "answer": "Yes, go to Project Settings > General > Transfer Ownership. Enter the email of the new owner (must be an existing team member with Admin role)."
+  },
+  {
+    "question": "How do I set up webhooks?",
+    "answer": "Navigate to Settings > Developer > Webhooks. Add a new webhook URL, select the events you want to subscribe to, and optionally add a signing secret for verification."
+  },
+  {
+    "question": "What data formats are supported for import?",
+    "answer": "We support CSV, JSON, XML, and Excel (.xlsx) formats for data import. Maximum file size is 50 MB. For larger imports, use our API bulk upload endpoint."
+  },
+  {
+    "question": "How does the search feature work?",
+    "answer": "Our search uses hybrid retrieval combining semantic search (for meaning) and keyword search (for exact matches). Results are ranked by relevance with confidence scores."
+  },
+  {
+    "question": "How do I view my billing history?",
+    "answer": "Go to Settings > Billing > Invoice History. You can view, download, and print invoices for all past transactions."
+  },
+  {
+    "question": "Is my data encrypted?",
+    "answer": "Yes, all data is encrypted at rest using AES-256 and in transit using TLS 1.3. We also support customer-managed encryption keys on Enterprise plans."
+  },
+  {
+    "question": "How do I reset my API key?",
+    "answer": "Go to Settings > Developer > API Keys. Click the 'Regenerate' button next to your existing key. The old key will be immediately invalidated."
+  },
+  {
+    "question": "Can I white-label the platform?",
+    "answer": "White-labeling is available on Enterprise plans. This includes custom domain, logo, color scheme, and email branding. Contact sales@example.com for details."
+  },
+  {
+    "question": "How do I configure SSO?",
+    "answer": "SSO is available on Enterprise plans. Go to Settings > Security > Single Sign-On. We support SAML 2.0 and OpenID Connect protocols."
+  },
+  {
+    "question": "What is the maximum file upload size?",
+    "answer": "Free plan: 10 MB per file. Pro plan: 100 MB per file. Enterprise plan: 500 MB per file. Supported formats include PDF, DOCX, images, and spreadsheets."
+  },
+  {
+    "question": "How do I archive a project?",
+    "answer": "Open the project, go to Project Settings > General > Archive Project. Archived projects are read-only and don't count toward your project limit."
+  },
+  {
+    "question": "Can I schedule reports?",
+    "answer": "Yes, go to Reports > Schedule. Choose the report type, frequency (daily, weekly, monthly), recipients, and preferred format (PDF or CSV)."
+  },
+  {
+    "question": "How do I manage user permissions?",
+    "answer": "Navigate to Settings > Team > Permissions. You can set granular permissions per project or use role-based presets (Admin, Editor, Viewer)."
+  },
+  {
+    "question": "What happens when my trial expires?",
+    "answer": "When your 14-day trial expires, your account will be downgraded to the Free plan. All data is preserved, but premium features will be locked until you upgrade."
+  },
+  {
+    "question": "How do I enable audit logs?",
+    "answer": "Audit logs are available on Pro and Enterprise plans. Go to Settings > Security > Audit Log to view all user activity including logins, changes, and API calls."
+  },
+  {
+    "question": "Can I use the API without an account?",
+    "answer": "No, API access requires authentication. You must sign up for an account and generate an API key. All API endpoints require a valid Bearer token."
+  },
+  {
+    "question": "How do I change my timezone?",
+    "answer": "Go to Settings > Account > Preferences > Timezone. Select your timezone from the dropdown. This affects all date and time displays across the platform."
+  },
+  {
+    "question": "What integrations are available?",
+    "answer": "We integrate with Slack, Microsoft Teams, Jira, GitHub, Zapier, Google Workspace, and Salesforce. Visit Settings > Integrations to see all available options."
+  },
+  {
+    "question": "How do I share a dashboard?",
+    "answer": "Open the dashboard and click the 'Share' button. You can share with team members, create a public link (read-only), or embed it in external sites using an iframe."
+  },
+  {
+    "question": "What is the data retention policy?",
+    "answer": "Active accounts: data retained indefinitely. Deleted accounts: data removed after 30-day grace period. We comply with GDPR and offer data processing agreements on request."
+  },
+  {
+    "question": "How do I troubleshoot login issues?",
+    "answer": "Try clearing your browser cache and cookies. Ensure you're using a supported browser. If using SSO, verify with your IT admin. Contact support if the issue persists."
+  },
+  {
+    "question": "Can I import data from another platform?",
+    "answer": "Yes, we support migration from major platforms. Go to Settings > Data > Import and select your source platform. Our migration wizard will guide you through the process."
+  },
+  {
+    "question": "How do I set up email forwarding?",
+    "answer": "Go to Settings > Integrations > Email. Add your support email address and configure forwarding rules. Incoming emails will automatically create tickets in your dashboard."
+  },
+  {
+    "question": "What are usage analytics?",
+    "answer": "Usage analytics show your API call volume, storage usage, active users, and feature adoption. Access them from the Dashboard > Analytics tab."
+  },
+  {
+    "question": "How do I request a new feature?",
+    "answer": "Visit our feedback portal at feedback.example.com to submit and vote on feature requests. Our product team reviews submissions monthly."
+  },
+  {
+    "question": "Is there a service level agreement?",
+    "answer": "SLAs are available on Enterprise plans. They include guaranteed response times (1 hour for critical issues), 99.9% uptime, and a dedicated account manager."
+  },
+  {
+    "question": "How do I update my billing information?",
+    "answer": "Go to Settings > Billing > Payment Methods. You can add, update, or remove credit cards and PayPal accounts. Changes take effect immediately."
+  },
+  {
+    "question": "What compliance certifications do you have?",
+    "answer": "We are SOC 2 Type II certified, GDPR compliant, and HIPAA compliant (Enterprise plan). Certification documents are available upon request at compliance@example.com."
+  }
+]
